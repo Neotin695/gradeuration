@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1095315953577",
+    "project_id": "gradeuartion-e224f",
+    "storage_bucket": "gradeuartion-e224f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095315953577:android:628db371470a897e1a16b8",
+        "android_client_info": {
+          "package_name": "mehani.sim.gradeuration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ML-vGV3Q5Aqan1_4mYd5RhfAW5Ik4Uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
