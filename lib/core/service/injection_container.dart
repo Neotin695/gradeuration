@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
-import 'package:gradeuration/feature/features/auth/data/datasources/auth_service.dart';
-import 'package:gradeuration/feature/features/auth/data/repositories/auth_repo_impl.dart';
-import 'package:gradeuration/feature/features/auth/domain/repositories/auth_repo.dart';
-import 'package:gradeuration/feature/features/auth/domain/usecases/forgot_password_usecase.dart';
-import 'package:gradeuration/feature/features/auth/domain/usecases/signin_usecase.dart';
-import 'package:gradeuration/feature/features/auth/domain/usecases/signup_usecase.dart';
-import 'package:gradeuration/feature/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:gradeuration/features/auth/data/datasources/auth_service.dart';
+import 'package:gradeuration/features/auth/data/repositories/auth_repo_impl.dart';
+import 'package:gradeuration/features/auth/domain/repositories/auth_repo.dart';
+import 'package:gradeuration/features/auth/domain/usecases/forgot_password_usecase.dart';
+import 'package:gradeuration/features/auth/domain/usecases/signin_usecase.dart';
+import 'package:gradeuration/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:gradeuration/features/auth/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
 

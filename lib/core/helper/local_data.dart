@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_value/shared_value.dart';
 
-import '../../feature/features/auth/data/models/user_profile_model.dart';
-import '../../feature/features/auth/domain/entities/user_profile_entity.dart';
+import '../../features/auth/data/models/user_profile_model.dart';
+import '../../features/auth/domain/entities/user_profile_entity.dart';
 
 final SharedValue<String> userData = SharedValue(key: 'currentUser', value: '');
 
