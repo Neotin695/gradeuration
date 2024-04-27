@@ -5,6 +5,8 @@ import 'package:gradeuration/core/helper/local_data.dart';
 import 'package:gradeuration/features/auth/presentation/pages/auth_signup_page.dart';
 import 'package:gradeuration/features/auth/presentation/pages/welcome_page.dart';
 import 'package:gradeuration/features/home/pages/home_page.dart';
+import 'package:gradeuration/features/medication/presentation/pages/medication_page.dart';
+import 'package:gradeuration/features/settings/presentation/pages/profile_page.dart';
 import 'package:gradeuration/features/settings/presentation/pages/settings_page.dart';
 
 enum AppRoutes {
@@ -12,6 +14,8 @@ enum AppRoutes {
   signup(path: 'signup'),
   settings(path: 'settings'),
   home(path: '/home'),
+  profile(path: 'profile'),
+  medication(path: 'medication'),
   init(path: '/');
 
   const AppRoutes({required this.path});
@@ -21,6 +25,7 @@ enum AppRoutes {
 signinRoute(path) => '/signin/$path';
 
 homeRoute(path) => '/home/$path';
+settingsRoute(path) => '/home/settings/$path';
 
 final routes = GoRouter(
   initialLocation: AppRoutes.signin.path,
@@ -53,6 +58,19 @@ final routes = GoRouter(
           path: AppRoutes.settings.path,
           pageBuilder: (context, state) =>
               const MaterialPage(child: SettingsPage()),
+          routes: [
+            GoRoute(
+              path: AppRoutes.profile.path,
+              pageBuilder: (context, state) =>
+                  const MaterialPage(child: ProfilePage()),
+              routes: [],
+            ),
+          ],
+        ),
+        GoRoute(
+          path: AppRoutes.medication.path,
+          pageBuilder: (context, state) =>
+              const MaterialPage(child: MedicationPage()),
         ),
       ],
     ),

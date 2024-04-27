@@ -7,6 +7,7 @@ import 'package:shared_value/shared_value.dart';
 import 'package:gradeuration/features/app/app_page.dart';
 
 import 'core/helper/local_data.dart';
+import 'core/helper/notification_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,5 +17,6 @@ void main() async {
   );
   prefs = await SharedPreferences.getInstance();
   initializeGetIt();
+  NotificationService.init();
   runApp(SharedValue.wrapApp(const AppPage()));
 }

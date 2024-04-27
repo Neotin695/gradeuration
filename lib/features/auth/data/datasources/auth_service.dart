@@ -15,8 +15,14 @@ class AuthService {
   }
 
   Future<void> signIn(email, password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
-    await updateUser();
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await updateUser();
+    } on FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<void> signInWithBiometric() async {
@@ -29,24 +35,26 @@ class AuthService {
     try {
       final result = await _auth.createUserWithEmailAndPassword(
           email: data['email'], password: data['password']);
-      if (data['imageUrl'].isNotEmpty) {
+      if ((data['medicalReportImg'] as String).isNotEmpty) {
         SettableMetadata metaData = SettableMetadata(contentType: 'image/jpeg');
         final res = await _storage
             .ref('medicalReports')
             .child(result.user!.uid)
-            .child(data['imageUrl'].split('/').last + '.jpeg')
-            .putFile(File(data['imageUrl']), metaData);
+            .child(data['medicalReportImg'].split('/').last + '.jpeg')
+            .putFile(File(data['medicalReportImg']), metaData);
 
         if (res.state == TaskState.success) {
-          data['imageUrl'] = await res.ref.getDownloadURL();
+          data['medicalReportImg'] = await res.ref.getDownloadURL();
         } else {
-          data['imageUrl'] = '';
+          data['medicalReportImg'] = '';
         }
       }
       // upload userData to firestore
       data['id'] = result.user!.uid;
       await _firestore.collection('users').doc(data['id']).set(data);
       await updateUser();
+    } on FirebaseAuthException catch (e) {
+      throw e.code;
     } catch (e) {
       throw e;
     }

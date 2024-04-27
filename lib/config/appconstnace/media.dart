@@ -6,6 +6,8 @@ enum Media {
   schedule(path: 'assets/icons/schedule.svg'),
   dailyTask(path: 'assets/icons/daily_task.svg'),
   game(path: 'assets/icons/game.svg'),
+  pill(path: 'assets/images/pills.svg'),
+  doneState(path: 'assets/images/done_state.svg'),
   init(path: '');
 
   const Media({required this.path});

@@ -45,6 +45,7 @@ class _AuthSignInViewState extends State<AuthSignInView> {
         }
         if (state is AuthSuccess) {
           BotToast.closeAllLoading();
+          context.go(AppRoutes.home.path);
         }
         if (state is AuthFailure) {
           BotToast.closeAllLoading();

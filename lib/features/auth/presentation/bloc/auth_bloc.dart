@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -54,19 +53,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await _signUpUsecase(
           UserProfileModel(
-                  id: '',
-                  userName: userName.text,
-                  phoneNumber: phoneNum,
-                  email: email.text,
-                  diagnosis: selectedDiagnosis,
-                  stage: selectedStage,
-                  password: password.text,
-                  imageUrl: docImage,
-                  gander: selectedGendar,
-                  dateOfBirth: DateFormat.yMEd().format(selectedDate!),
-                  location: city.text,
-                  fullName: fullName.text)
-              .toJson(),
+            id: '',
+            userName: userName.text,
+            phoneNumber: phoneNum,
+            email: email.text,
+            diagnosis: selectedDiagnosis,
+            stage: selectedStage,
+            password: password.text,
+            medicalReportImg: docImage,
+            role: 'Patient',
+            profileImg: '',
+            gander: selectedGendar,
+            dateOfBirth: DateFormat.yMEd().format(selectedDate!),
+            location: city.text,
+            fullName: fullName.text,
+            medications: const [],
+          ).toJson(),
         );
         emit(AuthSuccess());
         email.clear();

@@ -5,6 +5,7 @@ import 'package:gradeuration/config/appconstnace/media.dart';
 import 'package:gradeuration/core/helper/local_data.dart';
 import 'package:gradeuration/core/routes/routes.dart';
 import 'package:gradeuration/core/tools/tools.dart';
+import 'package:gradeuration/features/settings/presentation/pages/map_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,17 +33,22 @@ class HomePage extends StatelessWidget {
           ],
         ),
         actions: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.blue[600],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.location_pin,
-                color: Colors.white,
+          InkWell(
+            onTap: () {
+              showBtmSheet(context, const MapPage());
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.blue[600],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -65,6 +71,9 @@ class HomePage extends StatelessWidget {
                   image: Media.medication.path,
                   color: const Color.fromARGB(255, 184, 69, 255),
                   title: t.medicatiokn,
+                  onTap: () {
+                    context.go(homeRoute(AppRoutes.medication.path));
+                  },
                 ),
                 ItemWidget(
                   image: Media.schedule.path,
@@ -102,37 +111,43 @@ class ItemWidget extends StatelessWidget {
     required this.image,
     required this.title,
     required this.color,
+    this.onTap,
   });
   final String image;
   final String title;
   final Color color;
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 57, 57, 57),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 57, 57, 57),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: SvgPicture.asset(image),
+              ),
             ),
-            child: Center(
-              child: SvgPicture.asset(image),
-            ),
-          ),
-          vSpace(2),
-          Text(
-            title,
-            style:
-                txtTheme(context).headlineSmall!.copyWith(color: Colors.white),
-          )
-        ],
+            vSpace(2),
+            Text(
+              title,
+              style: txtTheme(context)
+                  .headlineSmall!
+                  .copyWith(color: Colors.white),
+            )
+          ],
+        ),
       ),
     );
   }

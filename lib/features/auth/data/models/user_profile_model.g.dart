@@ -13,13 +13,18 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      imageUrl: json['imageUrl'] as String,
+      medicalReportImg: json['medicalReportImg'] as String,
       gander: json['gander'] as String,
       dateOfBirth: json['dateOfBirth'] as String,
       location: json['location'] as String,
       fullName: json['fullName'] as String,
       diagnosis: json['diagnosis'] as String,
       stage: json['stage'] as String,
+      profileImg: json['profileImg'] as String,
+      role: json['role'] as String,
+      medications: (json['medications'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
@@ -29,11 +34,14 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'phoneNumber': instance.phoneNumber,
       'email': instance.email,
       'password': instance.password,
-      'imageUrl': instance.imageUrl,
+      'medicalReportImg': instance.medicalReportImg,
+      'profileImg': instance.profileImg,
       'gander': instance.gander,
       'diagnosis': instance.diagnosis,
       'stage': instance.stage,
       'dateOfBirth': instance.dateOfBirth,
       'location': instance.location,
       'fullName': instance.fullName,
+      'role': instance.role,
+      'medications': instance.medications,
     };

@@ -7,13 +7,16 @@ class UserProfileEntity extends Equatable {
   final String phoneNumber;
   final String email;
   final String password;
-  final String imageUrl;
+  final String medicalReportImg;
+  final String profileImg;
   final String gander;
   final String diagnosis;
   final String stage;
   final String dateOfBirth;
   final String location;
   final String fullName;
+  final String role;
+  final List<String> medications;
 
   const UserProfileEntity({
     required this.id,
@@ -21,13 +24,16 @@ class UserProfileEntity extends Equatable {
     required this.phoneNumber,
     required this.email,
     required this.password,
-    required this.imageUrl,
+    required this.medicalReportImg,
+    required this.profileImg,
     required this.gander,
     required this.diagnosis,
     required this.stage,
     required this.dateOfBirth,
     required this.location,
     required this.fullName,
+    required this.role,
+    required this.medications,
   });
 
   @override
@@ -38,15 +44,19 @@ class UserProfileEntity extends Equatable {
       phoneNumber,
       email,
       password,
-      imageUrl,
+      medicalReportImg,
+      profileImg,
       gander,
+      diagnosis,
+      stage,
       dateOfBirth,
       location,
       fullName,
+      role,
     ];
   }
 
-
+ 
 
   UserProfileEntity copyWith({
     String? id,
@@ -54,13 +64,16 @@ class UserProfileEntity extends Equatable {
     String? phoneNumber,
     String? email,
     String? password,
-    String? imageUrl,
+    String? medicalReportImg,
+    String? profileImg,
     String? gander,
     String? diagnosis,
     String? stage,
     String? dateOfBirth,
     String? location,
     String? fullName,
+    String? role,
+    List<String>? medications,
   }) {
     return UserProfileEntity(
       id: id ?? this.id,
@@ -68,13 +81,16 @@ class UserProfileEntity extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
       password: password ?? this.password,
-      imageUrl: imageUrl ?? this.imageUrl,
+      medicalReportImg: medicalReportImg ?? this.medicalReportImg,
+      profileImg: profileImg ?? this.profileImg,
       gander: gander ?? this.gander,
       diagnosis: diagnosis ?? this.diagnosis,
       stage: stage ?? this.stage,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       location: location ?? this.location,
       fullName: fullName ?? this.fullName,
+      role: role ?? this.role,
+      medications: medications ?? this.medications,
     );
   }
 }
