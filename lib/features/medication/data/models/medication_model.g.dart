@@ -11,7 +11,8 @@ MedicationModel _$MedicationModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      schedules: json['schedules'] as int,
+      schedules:
+          (json['schedules'] as List<dynamic>).map((e) => e as String).toList(),
       frequency: json['frequency'] as String,
       timesPerWeek: json['timesPerWeek'] as int,
       duration: json['duration'] as int,

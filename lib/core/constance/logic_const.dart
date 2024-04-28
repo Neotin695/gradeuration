@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gradeuration/core/tools/tools.dart';
 
 List<Map<String, dynamic>> gendar = [
@@ -38,3 +39,18 @@ enum DurationMedication {
   const DurationMedication({required this.count});
   final int count;
 }
+
+List<String> schedule = [
+  'Before Breakfast',
+  'After Breakfast',
+  'After Dinner',
+  'Before Dinner',
+  'After Meals',
+  'Before Meals'
+];
+
+List<Color> colorsSchedule = [
+  Colors.green[300]!,
+  Colors.pink[300]!,
+  Colors.blue[300]!
+];

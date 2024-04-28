@@ -33,11 +33,17 @@ class MedicationService {
       return const Stream.empty();
     }
     List<MedicationModel> medications = [];
-    for (var id in currentUser.medications) {
-      _store.collection('medications').doc(id).snapshots().map((event) {
-        final medication = MedicationModel.fromJson(event.data()!);
-        medications.add(medication);
-      });
+    try {
+      for (var id in currentUser.medications) {
+        _store.collection('medications').doc(id).snapshots().forEach((event) {
+          if (event.exists) {
+            final medication = MedicationModel.fromJson(event.data()!);
+            medications.add(medication);
+          }
+        });
+      }
+    } catch (e) {
+      return Stream.error(e);
     }
     return Stream.value(medications);
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
   final DeleteMedicationUsecase _deleteMedicationUsecase;
   final TextEditingController title = TextEditingController();
   final TextEditingController description = TextEditingController();
-  int schedules = 2;
+  List<String> schedules = [];
   int duration = 30;
   String frequency = Frequency.daily.name;
   int timesPerWeek = 2;
@@ -64,6 +65,7 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
     emit(MedicationLoading());
     await emit.forEach(_fetchMedicationUsecase({}), onData: (data) {
       medications = data;
+
       return MedicationSuccess();
     }, onError: (er, err) {
       return MedicationFailure(er.toString());

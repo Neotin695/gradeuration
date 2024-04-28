@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 class NotificationService {
- static init() {
+  static init() {
     AwesomeNotifications().initialize(
       null,
       [
@@ -14,7 +14,7 @@ class NotificationService {
     );
   }
 
- static Future<void> showScheduleNotification(
+  static Future<void> showScheduleNotification(
       String title, String body, String payload, DateTime dateTime) async {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -25,7 +25,7 @@ class NotificationService {
         body: body,
       ),
       schedule: NotificationCalendar(
-        timeZone: 'EEST',
+        timeZone: dateTime.timeZoneName,
         day: dateTime.day,
         year: dateTime.year,
         month: dateTime.month,

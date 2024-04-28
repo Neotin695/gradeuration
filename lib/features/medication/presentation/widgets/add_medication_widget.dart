@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,7 +110,39 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ListView.builder(
+                                itemCount: schedule.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap:(){
+                                                       
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      margin: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: colorsSchedule[Random()
+                                            .nextInt(colorsSchedule.length)],
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          schedule[index],
+                                          style: const TextStyle(
+                                              color: Colors.black45),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(
                           Icons.add_circle_outline,
                           color: Colors.white,

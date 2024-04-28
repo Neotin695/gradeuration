@@ -5,7 +5,7 @@ class MedicationEntity extends Equatable {
   final String id;
   final String title;
   final String description;
-  final int schedules;
+  final List<String> schedules;
   final String frequency;
   final int timesPerWeek;
   final int duration;
@@ -30,25 +30,5 @@ class MedicationEntity extends Equatable {
       timesPerWeek,
       duration,
     ];
-  }
-
-  MedicationEntity copyWith({
-    String? id,
-    String? title,
-    String? description,
-    int? schedules,
-    String? frequency,
-    int? timesPerWeek,
-    int? duration,
-  }) {
-    return MedicationEntity(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      schedules: schedules ?? this.schedules,
-      frequency: frequency ?? this.frequency,
-      timesPerWeek: timesPerWeek ?? this.timesPerWeek,
-      duration: duration ?? this.duration,
-    );
   }
 }

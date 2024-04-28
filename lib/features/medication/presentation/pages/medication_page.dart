@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gradeuration/config/appconstnace/media.dart';
 import 'package:gradeuration/core/service/injection_container.dart';
 import 'package:gradeuration/features/medication/presentation/bloc/medication_bloc.dart';
 import 'package:gradeuration/features/medication/presentation/widgets/add_medication_widget.dart';
@@ -33,6 +35,7 @@ class _MedicationViewState extends State<MedicationView>
   void initState() {
     _controller = TabController(length: 3, vsync: this);
     bloc = BlocProvider.of<MedicationBloc>(context);
+    bloc.add(FetchMedicationEvent());
     super.initState();
   }
 
@@ -47,7 +50,7 @@ class _MedicationViewState extends State<MedicationView>
           children: [
             CalendarDatePicker(
               initialDate: DateTime.now(),
-              firstDate: DateTime.now().subtract(Duration(days: 3000)),
+              firstDate: DateTime.now().subtract(const Duration(days: 3000)),
               lastDate: DateTime.now(),
               onDateChanged: (value) {},
             ),
@@ -60,13 +63,25 @@ class _MedicationViewState extends State<MedicationView>
               ],
             ),
             Expanded(
-              child: TabBarView(
-                controller: _controller,
-                children: [
-                  weekView(),
-                  dayView(),
-                  monthView(),
-                ],
+              child: BlocBuilder<MedicationBloc, MedicationState>(
+                builder: (context, state) {
+                  if (state is MedicationLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is MedicationSuccess) {
+                    return TabBarView(
+                      controller: _controller,
+                      children: [
+                        weekView(),
+                        dayView(),
+                        monthView(),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                },
               ),
             )
           ],
@@ -84,97 +99,47 @@ class _MedicationViewState extends State<MedicationView>
   }
 
   weekView() {
-    return BlocBuilder<MedicationBloc, MedicationState>(
-      builder: (context, state) {
-        if (state is MedicationLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is MedicationFailure) {
-          return Center(
-            child: Text(state.message),
-          );
-        }
-        if (state is MedicationSuccess) {
-          return Expanded(
-            child: ListView.builder(
-              itemCount: bloc.medications.length,
-              itemBuilder: (context, index) {
-                final medication = bloc.medications[index];
-                return ListTile(
-                  title: Text(medication.title),
-                  subtitle: Text(medication.description),
-                );
-              },
-            ),
-          );
-        }
-        return Container();
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: bloc.medications.length,
+      itemBuilder: (context, index) {
+        final medication = bloc.medications[index];
+        return ListTile(
+          title: Text(medication.title),
+          subtitle: Text(medication.description),
+        );
       },
     );
   }
 
   dayView() {
-    return BlocBuilder<MedicationBloc, MedicationState>(
-      builder: (context, state) {
-        if (state is MedicationLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is MedicationFailure) {
-          return Center(
-            child: Text(state.message),
-          );
-        }
-        if (state is MedicationSuccess) {
-          return Expanded(
-            child: ListView.builder(
-              itemCount: bloc.medications.length,
-              itemBuilder: (context, index) {
-                final medication = bloc.medications[index];
-                return ListTile(
-                  title: Text(medication.title),
-                  subtitle: Text(medication.description),
-                );
-              },
-            ),
-          );
-        }
-        return Container();
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: bloc.medications.length,
+      itemBuilder: (context, index) {
+        final medication = bloc.medications[index];
+        return ListTile(
+          leading: CircleAvatar(
+            radius: 25,
+            child: SvgPicture.asset(Media.pill.path),
+          ),
+          title: Text(medication.title),
+          subtitle: Text(medication.description),
+        );
       },
     );
   }
 
   monthView() {
-    return BlocBuilder<MedicationBloc, MedicationState>(
-      builder: (context, state) {
-        if (state is MedicationLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is MedicationFailure) {
-          return Center(
-            child: Text(state.message),
-          );
-        }
-        if (state is MedicationSuccess) {
-          return Expanded(
-            child: ListView.builder(
-              itemCount: bloc.medications.length,
-              itemBuilder: (context, index) {
-                final medication = bloc.medications[index];
-                return ListTile(
-                  title: Text(medication.title),
-                  subtitle: Text(medication.description),
-                );
-              },
-            ),
-          );
-        }
-        return Container();
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: bloc.medications.length,
+      itemBuilder: (context, index) {
+        final medication = bloc.medications[index];
+        return ListTile(
+          title: Text(medication.title),
+          subtitle: Text(medication.description),
+        );
       },
     );
   }
