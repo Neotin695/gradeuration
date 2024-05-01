@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +20,12 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
   final DeleteMedicationUsecase _deleteMedicationUsecase;
   final TextEditingController title = TextEditingController();
   final TextEditingController description = TextEditingController();
+  final TextEditingController cause = TextEditingController();
   List<String> schedules = [];
+  List<String> selectedSchedules = [];
   int duration = 30;
+  int amountValue = 2;
+  Amount amount = Amount.dose;
   String frequency = Frequency.daily.name;
   int timesPerWeek = 2;
   List<MedicationEntity> medications = [];
@@ -33,11 +36,16 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
     on<AddMedicationEvent>(_addMedicationEvent);
     on<UpdateMedicationEvent>(_updateMedicationEvent);
     on<DeleteMedicationEvent>(_deleteMedicationEvent);
+    on<ChangeAmountValue>((event, emit) {
+      if (event.value > 1) {
+        amountValue = event.value;
+      }
+    });
   }
 
   FutureOr<void> _deleteMedicationEvent(event, emit) async {
     emit(MedicationLoading());
-    await _deleteMedicationUsecase(event.medication);
+    await _deleteMedicationUsecase({'id':event.id});
     emit(MedicationSuccess());
   }
 
@@ -49,26 +57,39 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
 
   FutureOr<void> _addMedicationEvent(event, emit) async {
     emit(MedicationLoading());
-    await _addMedicationUsecase(MedicationModel(
-      id: '',
-      title: title.text,
-      description: description.text,
-      schedules: schedules,
-      duration: duration,
-      frequency: frequency,
-      timesPerWeek: timesPerWeek,
-    ).toJson());
-    emit(MedicationSuccess());
+    try {
+      await _addMedicationUsecase(MedicationModel(
+        id: '',
+        title: title.text,
+        description: description.text,
+        schedules: schedules,
+        duration: duration,
+        frequency: frequency,
+        pill: amountValue,
+        type: amount.name,
+        cause: cause.text,
+        taken: 0,
+        timesPerWeek: timesPerWeek,
+      ).toJson());
+      title.clear();
+      description.clear();
+      emit(MedicationSuccess());
+    } catch (e) {
+      emit(MedicationFailure(e.toString()));
+    }
   }
 
-  FutureOr<void> _fetchMedicationsEvent(event, emit) async {
+  FutureOr<void> _fetchMedicationsEvent(event, Emitter emit) async {
     emit(MedicationLoading());
-    await emit.forEach(_fetchMedicationUsecase({}), onData: (data) {
-      medications = data;
-
-      return MedicationSuccess();
-    }, onError: (er, err) {
-      return MedicationFailure(er.toString());
-    });
+    await emit.forEach(
+      _fetchMedicationUsecase({}),
+      onData: (data) {
+        medications = data;
+        return MedicationSuccess();
+      },
+      onError: (er, err) {
+        return MedicationFailure(er.toString());
+      },
+    );
   }
 }

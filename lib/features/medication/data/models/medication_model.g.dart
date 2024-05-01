@@ -16,6 +16,10 @@ MedicationModel _$MedicationModelFromJson(Map<String, dynamic> json) =>
       frequency: json['frequency'] as String,
       timesPerWeek: json['timesPerWeek'] as int,
       duration: json['duration'] as int,
+      cause: json['cause'] as String,
+      pill: json['pill'] as int,
+      type: json['type'] as String,
+      taken: json['taken'] as int,
     );
 
 Map<String, dynamic> _$MedicationModelToJson(MedicationModel instance) =>
@@ -23,8 +27,12 @@ Map<String, dynamic> _$MedicationModelToJson(MedicationModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
-      'schedules': instance.schedules,
+      'cause': instance.cause,
       'frequency': instance.frequency,
       'timesPerWeek': instance.timesPerWeek,
+      'pill': instance.pill,
+      'type': instance.type,
       'duration': instance.duration,
+      'taken': instance.taken,
+      'schedules': instance.schedules,
     };

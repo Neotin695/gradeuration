@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,7 +7,10 @@ import 'package:gradeuration/config/appconstnace/media.dart';
 import 'package:gradeuration/core/service/injection_container.dart';
 import 'package:gradeuration/features/medication/presentation/bloc/medication_bloc.dart';
 import 'package:gradeuration/features/medication/presentation/widgets/add_medication_widget.dart';
+import 'package:gradeuration/features/medication/presentation/widgets/preview_medication.dart';
+import 'package:sizer/sizer.dart';
 
+import '../../../../core/constance/logic_const.dart';
 import '../../../../core/tools/tools.dart';
 
 class MedicationPage extends StatelessWidget {
@@ -33,7 +38,7 @@ class _MedicationViewState extends State<MedicationView>
   late final MedicationBloc bloc;
   @override
   void initState() {
-    _controller = TabController(length: 3, vsync: this);
+    _controller = TabController(length: 2, vsync: this);
     bloc = BlocProvider.of<MedicationBloc>(context);
     bloc.add(FetchMedicationEvent());
     super.initState();
@@ -59,7 +64,6 @@ class _MedicationViewState extends State<MedicationView>
               tabs: [
                 Tab(text: t.week),
                 Tab(text: t.day),
-                Tab(text: t.month),
               ],
             ),
             Expanded(
@@ -76,7 +80,6 @@ class _MedicationViewState extends State<MedicationView>
                       children: [
                         weekView(),
                         dayView(),
-                        monthView(),
                       ],
                     );
                   }
@@ -99,34 +102,118 @@ class _MedicationViewState extends State<MedicationView>
   }
 
   weekView() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: bloc.medications.length,
-      itemBuilder: (context, index) {
-        final medication = bloc.medications[index];
-        return ListTile(
-          title: Text(medication.title),
-          subtitle: Text(medication.description),
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        bloc.add(FetchMedicationEvent());
       },
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: bloc.medications.length,
+        itemBuilder: (context, index) {
+          final medication = bloc.medications[index];
+          return Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  showBtmSheet(context,
+                      PreviewMedication(medication: medication, bloc: bloc));
+                },
+                leading: CircleAvatar(
+                  radius: 25,
+                  child: SvgPicture.asset(Media.pill.path),
+                ),
+                title: Text(medication.title),
+                subtitle: Text(medication.description),
+              ),
+              SizedBox(
+                height: 6.h,
+                width: 85.w,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: medication.schedules.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: colorsSchedule[
+                            Random().nextInt(colorsSchedule.length)],
+                      ),
+                      child: Center(
+                        child: Text(
+                          medication.schedules[index],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
   dayView() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: bloc.medications.length,
-      itemBuilder: (context, index) {
-        final medication = bloc.medications[index];
-        return ListTile(
-          leading: CircleAvatar(
-            radius: 25,
-            child: SvgPicture.asset(Media.pill.path),
-          ),
-          title: Text(medication.title),
-          subtitle: Text(medication.description),
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        bloc.add(FetchMedicationEvent());
       },
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: bloc.medications.length,
+        itemBuilder: (context, index) {
+          final medication = bloc.medications[index];
+          return Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  showBtmSheet(
+                      context,
+                      PreviewMedication(
+                        medication: medication,
+                        bloc: bloc,
+                      ));
+                },
+                leading: CircleAvatar(
+                  radius: 25,
+                  child: SvgPicture.asset(Media.pill.path),
+                ),
+                title: Text(medication.title),
+                subtitle: Text(medication.description),
+              ),
+              SizedBox(
+                height: 6.h,
+                width: 85.w,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: medication.schedules.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: colorsSchedule[
+                            Random().nextInt(colorsSchedule.length)],
+                      ),
+                      child: Center(
+                        child: Text(
+                          medication.schedules[index],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -136,9 +223,42 @@ class _MedicationViewState extends State<MedicationView>
       itemCount: bloc.medications.length,
       itemBuilder: (context, index) {
         final medication = bloc.medications[index];
-        return ListTile(
-          title: Text(medication.title),
-          subtitle: Text(medication.description),
+        return Column(
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                radius: 25,
+                child: SvgPicture.asset(Media.pill.path),
+              ),
+              title: Text(medication.title),
+              subtitle: Text(medication.description),
+            ),
+            SizedBox(
+              height: 6.h,
+              width: 85.w,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: medication.schedules.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: colorsSchedule[
+                          Random().nextInt(colorsSchedule.length)],
+                    ),
+                    child: Center(
+                      child: Text(
+                        medication.schedules[index],
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );

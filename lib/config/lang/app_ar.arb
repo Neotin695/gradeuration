@@ -96,13 +96,33 @@
   "week": "اسبوع",
   "day": "يوم",
   "month": "شهر",
-  "title": "العنوان",
+  "title": "اسم",
   "description": "الوصف",
   "timeAndDate": "الوقت والتاريخ",
   "frequency": "التكرار",
   "duration": "المدة",
   "addReminder": "إضافة تذكير",
-  "cancel": "إلغاء",
+  "limitSchedule": "لقد تجاوزت الحد الاقصي",
+  "edit": "تعديل",
+  "remove": "حذف",
+  "amount": "الكمية",
+  "thisMonth": "هذا الشهر",
+  "cause": "السبب",
+  "capSize": "حجم الكوب",
+  "pill": "{title}/{pill}",
+  "@pill":{
+    "placeholders": {
+      "title":{
+
+      },
+      "pill":{
+
+      }
+    }
+  },
+  "pillText": "حبة",
+  "doseText": "جرعة",
+  "temp": "temp",
   "temp": "temp",
   "temp": "temp",
   "temp": "temp",

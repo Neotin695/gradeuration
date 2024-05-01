@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
+import '../constance/logic_const.dart';
 import '../routes/routes.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -36,6 +39,10 @@ Future<T?> showBtmSheet<T>(context, Widget child) async =>
         return child;
       },
     );
+
+Color randomColor() {
+  return colorsSchedule[Random().nextInt(colorsSchedule.length)];
+}
 
 AppLocalizations get t =>
     AppLocalizations.of(routes.configuration.navigatorKey.currentContext!)!;

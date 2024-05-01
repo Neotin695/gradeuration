@@ -33,8 +33,7 @@ enum DurationMedication {
   week(count: 7),
   week2(count: 14),
   week3(count: 12),
-  permanent(count: 999999999),
-  init(count: 0);
+  permanent(count: 999999999);
 
   const DurationMedication({required this.count});
   final int count;
@@ -54,3 +53,8 @@ List<Color> colorsSchedule = [
   Colors.pink[300]!,
   Colors.blue[300]!
 ];
+
+enum Amount {
+  pill,
+  dose;
+}

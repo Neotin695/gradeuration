@@ -18,3 +18,9 @@ class DeleteMedicationEvent extends MedicationEvent {
 }
 
 class UpdateMedicationEvent extends MedicationEvent {}
+
+class ChangeAmountValue extends MedicationEvent {
+  final int value;
+
+  const ChangeAmountValue(this.value);
+}

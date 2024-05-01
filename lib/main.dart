@@ -8,7 +8,7 @@ import 'package:gradeuration/features/app/app_page.dart';
 
 import 'core/helper/local_data.dart';
 import 'core/helper/notification_service.dart';
-import 'firebase_options.dart';
+import 'core/service/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

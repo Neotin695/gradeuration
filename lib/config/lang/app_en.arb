@@ -17,7 +17,6 @@
   "register": "Register",
   "confirmFirngerPrint": "Confirm fingerprint to continue",
   "touchSensor": "Touch Sensor",
-  "cancel": "Cancel",
   "touchIdNot": "Touch id not working,",
   "clickHere": "Click here",
   "gerateUniqueCode": "Generate your unique code",
@@ -104,6 +103,31 @@
   "duration": "Duration",
   "addReminder": "Add Reminder",
   "cancel": "Cancel",
+  "limitSchedule": "You've crossed the limit.",
+  "edit": "Edit",
+  "remove": "Remove",
+  "amount": "Amount",
+  "thisMonth": "This Month",
+  "cause": "Cause",
+  "capSize": "Mug Size",
+  "pill": "{title}/{pill}",
+  "@pill":{
+    "placeholders": {
+      "title":{
+
+      },
+      "pill":{
+
+      }
+    }
+  },
+  "pillText": "Pill",
+  "doseText": "Dose",
+  "temp": "temp",
+  "temp": "temp",
+  "temp": "temp",
+  "temp": "temp",
+  "temp": "temp",
   "temp": "temp",
   "temp": "temp"
 }
