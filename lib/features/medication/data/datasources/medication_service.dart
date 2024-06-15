@@ -1,80 +1,100 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gradeuration/core/global_archtiecture/domain/usecases/send_notification_usecase.dart';
+import 'package:gradeuration/core/helper/firebase_messaging.dart';
 import 'package:gradeuration/core/helper/local_data.dart';
+import 'package:gradeuration/core/helper/notification_service.dart';
+import 'package:gradeuration/core/service/injection_container.dart';
 import 'package:gradeuration/features/auth/data/models/user_profile_model.dart';
-import 'package:gradeuration/features/medication/data/models/medication_model.dart';
 
-import '../../../../core/helper/notification_service.dart';
+import '../../../../core/tools/tools.dart';
+import '../../domain/entities/medication_entity.dart';
+import '../models/medication_model.dart';
 
 class MedicationService {
   final FirebaseFirestore _store = FirebaseFirestore.instance;
 
   Future<void> addMedication(Map<String, dynamic> data) async {
-    NotificationService.showScheduleNotification(
-        data['title'], data['description'], '', dateConfig(data));
-    data['id'] = _store.collection('medications').doc().id;
+    MedicationModel medication = MedicationModel.fromJson(data['medication']);
+    NotificationService.showNotification();
+    final id = _store.collection('medications').doc().id;
     final medicationsId = currentUser.medications;
-    medicationsId.add(data['id']);
+    medication = MedicationModel.fromEntity(medication.copyWith(id: id));
+    medicationsId.add(id);
     await _store.collection('users').doc(currentUser.id).update(
         UserProfileModel.fromEntity(
                 currentUser.copyWith(medications: medicationsId))
             .toJson());
-    await updateUser();
 
-    await _store.collection('medications').doc(data['id']).set(data);
+    await _store
+        .collection('medications')
+        .doc(medication.id)
+        .set(medication.toJson())
+        .then((value) {
+      if (medication.frequencyType == 'daily') {
+        NotificationService.showScheduleNotificationDay(medication, '');
+      } else {
+        NotificationService.showScheduleNotificationWeek(medication, '');
+      }
+    });
   }
 
-  Future<void> deleteMedication(String id) async {
-    final medicationsId = currentUser.medications;
-    medicationsId.remove(id);
+  Future<MedicationModel> fetchMedication(String id) async {
+    return MedicationModel.fromJson(
+        (await _store.collection('medications').doc(id).get()).data()!);
+  }
+
+  Future<void> deleteMedication(Map<String, dynamic> data) async {
+    final user = UserProfileModel.fromJson(data['medication']);
+    final medicationsId = user.medications;
+    medicationsId.remove(data['id']);
     await _store
         .collection('users')
-        .doc(currentUser.id)
+        .doc(user.id)
         .update(UserProfileModel.fromEntity(
-                currentUser.copyWith(medications: medicationsId))
+                user.copyWith(medications: medicationsId))
             .toJson())
         .then(
           (value) async =>
-              await _store.collection('medications').doc(id).delete(),
+              await _store.collection('medications').doc(data['id']).delete(),
         );
   }
 
-  Stream<List<MedicationModel>> fetchMedications() {
+  Future<List<MedicationEntity>> fetchMedications() async {
     try {
-      return _store
-          .collection('medications')
-          .where('id', whereIn: currentUser.medications)
-          .snapshots()
-          .map((event) {
-        return event.docs
-            .map((e) => MedicationModel.fromJson(e.data()))
-            .toList();
-      });
+      return List<MedicationModel>.from((await _store
+              .collection('medications')
+              .where('userId', isEqualTo: currentUser.id)
+              .get())
+          .docs
+          .map((e) => MedicationModel.fromJson(e.data())));
     } catch (e) {
-      return Stream.error(e);
+      throw e;
     }
   }
 
   Future<void> updateMedication(Map<String, dynamic> data) async {
-    await _store.collection('medications').doc(data['id']).update(data);
-  }
-
-  DateTime dateConfig(Map<String, dynamic> data) {
-    final int count = (data['schedules'] as List<String>).length;
-    final int timesPerDay = 24 ~/ count;
-    var date = DateTime(DateTime.now().year, DateTime.now().month,
-        DateTime.now().day, DateTime.now().day, timesPerDay);
-
-    if (date.isBefore(DateTime.now())) {
-      if (data['frequency'] == 'daily') {
-        date = date = DateTime(DateTime.now().year, DateTime.now().month,
-            (date.day) + 1, DateTime.now().hour, timesPerDay);
-      } else if (data['frequency'] == 'weekly') {
-        date = date = DateTime(DateTime.now().year, DateTime.now().month,
-            (date.day) + 7, DateTime.now().hour, timesPerDay);
+    final medication = MedicationModel.fromJson(data);
+    await _store
+        .collection('medications')
+        .doc(medication.id)
+        .update(data)
+        .then((value) async {
+      if (data['doctorId'].toString().isNotEmpty) {
+        final token =
+            (await _store.collection('users').doc(medication.doctorId).get())
+                .data()!['token'];
+        sl<SendNotificationUsecase>().call({
+          'notification': {
+            'title': t.updateTitle,
+            'body': t.updateBody(currentUser.fullName),
+          },
+          'data': {
+            'type': 'update-medication',
+            'medicationId': medication.id,
+          },
+          'to': token,
+        });
       }
-    }
-    date = date.subtract(const Duration(minutes: 10));
-
-    return date;
+    });
   }
 }

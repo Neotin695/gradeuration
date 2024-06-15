@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gradeuration/core/constance/logic_const.dart';
-import 'package:gradeuration/core/tools/tools.dart';
-import 'package:gradeuration/features/medication/domain/entities/medication_entity.dart';
-import 'package:gradeuration/features/medication/presentation/widgets/schedule_item.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../config/appconstnace/media.dart';
+import '../../../../core/constance/logic_const.dart';
+import '../../../../core/tools/tools.dart';
+import '../../domain/entities/medication_entity.dart';
 import '../bloc/medication_bloc.dart';
+import 'schedule_item.dart';
 
 class PreviewMedication extends StatelessWidget {
   const PreviewMedication(
@@ -77,10 +77,10 @@ class PreviewMedication extends StatelessWidget {
                       width: 85.w,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: medication.schedules.length,
+                        itemCount: medication.daysOfWeek.length,
                         itemBuilder: (context, index) {
                           return ScheduleItem(
-                            title: medication.schedules[index],
+                            title: medication.daysOfWeek[index],
                           );
                         },
                       ),
@@ -93,12 +93,7 @@ class PreviewMedication extends StatelessWidget {
                           media: Media.amount,
                           title: t.amount,
                           value:
-                              '${medication.pill} ${medication.type == Amount.pill.name ? t.pillText : t.doseText} / day',
-                        ),
-                        CardInfoMedication(
-                          media: Media.duration,
-                          title: t.thisMonth,
-                          value: '${medication.taken}/',
+                              '${medication.totalDoses} ${medication.doseType == Amount.pill.name ? t.pillText : t.doseText} / day',
                         ),
                       ],
                     ),

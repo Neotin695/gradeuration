@@ -6,6 +6,7 @@ import 'package:shared_value/shared_value.dart';
 
 import 'package:gradeuration/features/app/app_page.dart';
 
+import 'core/helper/firebase_messaging.dart';
 import 'core/helper/local_data.dart';
 import 'core/helper/notification_service.dart';
 import 'core/service/firebase_options.dart';
@@ -18,5 +19,8 @@ void main() async {
   prefs = await SharedPreferences.getInstance();
   initializeGetIt();
   NotificationService.init();
+
+  await FirebaseMessagingService.instance.initializeFirebaseMessaging();
+  NotificationService.showNotification();
   runApp(SharedValue.wrapApp(const AppPage()));
 }

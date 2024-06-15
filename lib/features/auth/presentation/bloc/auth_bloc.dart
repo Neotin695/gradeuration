@@ -2,11 +2,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gradeuration/core/helper/firebase_messaging.dart';
+import 'package:gradeuration/core/helper/notification_service.dart';
 import 'package:gradeuration/core/tools/tools.dart';
 import 'package:gradeuration/features/auth/data/models/user_profile_model.dart';
 import 'package:gradeuration/features/auth/domain/usecases/forgot_password_usecase.dart';
 import 'package:gradeuration/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:gradeuration/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:gradeuration/features/medication/domain/entities/medication_entity.dart';
+import 'package:gradeuration/features/medication/domain/usecases/fetch_medications_usecase.dart';
 import 'package:intl/intl.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -14,6 +18,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignInUsecase _signInUsecase;
   final SignUpUsecase _signUpUsecase;
+  final FetchMedicationsUsecase _fetchMedicationUsecase;
   final ForgotPasswordUsecase _forgotPasswordUsecase;
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -26,14 +31,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String selectedStage = t.little;
   String docImage = '';
   DateTime? selectedDate;
+  List<MedicationEntity> medications = [];
   AuthBloc(
     this._signInUsecase,
     this._signUpUsecase,
     this._forgotPasswordUsecase,
+    this._fetchMedicationUsecase,
   ) : super(AuthInitial()) {
     on<SignInEvent>(_signinEvent);
     on<SignUpEvent>(_signupEvent);
     on<ForgotPasswordEvent>(_forgotPasswordEvent);
+    on<FetchMedicationEvent>(_fetchMedicationsEvent);
+  }
+
+  FutureOr<void> _fetchMedicationsEvent(event, Emitter emit) async {
+    emit(AuthLoading());
+    try {
+      medications = await _fetchMedicationUsecase({});
+      for (var medication in medications) {
+        if (medication.frequencyType == 'daily') {
+          NotificationService.showScheduleNotificationDay(medication, '');
+        } else {
+          NotificationService.showScheduleNotificationWeek(medication, '');
+        }
+      }
+      emit(AuthSuccess());
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
+    }
   }
 
   FutureOr<void> _forgotPasswordEvent(event, emit) async {
@@ -56,6 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             id: '',
             userName: userName.text,
             phoneNumber: phoneNum,
+            tasks: [],
             email: email.text,
             diagnosis: selectedDiagnosis,
             stage: selectedStage,
@@ -68,6 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             location: city.text,
             fullName: fullName.text,
             medications: const [],
+            token: (await FirebaseMessagingService.instance.generateToken)!,
           ).toJson(),
         );
         emit(AuthSuccess());

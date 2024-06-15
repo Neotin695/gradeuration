@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gradeuration/config/appconstnace/media.dart';
-import 'package:gradeuration/core/constance/logic_const.dart';
-import 'package:gradeuration/core/tools/tools.dart';
-import 'package:gradeuration/features/auth/presentation/pages/auth_signup_page.dart';
-import 'package:gradeuration/features/medication/presentation/widgets/counter_widget.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../config/appconstnace/media.dart';
+import '../../../../core/constance/logic_const.dart';
+import '../../../../core/tools/shared/txt_field.dart';
+import '../../../../core/tools/tools.dart';
 import '../bloc/medication_bloc.dart';
 import 'add_schedule_widget.dart';
+import 'counter_widget.dart';
 
 class AddMedicationWidget extends StatefulWidget {
   const AddMedicationWidget({super.key, required this.bloc});
@@ -52,7 +52,7 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
           children: [
             SvgPicture.asset(
               Media.pill.path,
-              width: 35.w,
+              width: 30.w,
             ),
             const Spacer(),
             Card(
@@ -68,11 +68,11 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    vSpace(3),
+                    vSpace(2),
                     TxtField(cn: widget.bloc.title, label: t.title),
-                    vSpace(2),
+                    vSpace(1),
                     TxtField(cn: widget.bloc.description, label: t.description),
-                    vSpace(2),
+                    vSpace(1),
                     TxtField(cn: widget.bloc.cause, label: t.cause),
                     vSpace(1),
                     Text(
@@ -80,50 +80,54 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                       style: txtTheme(context).bodyLarge!.copyWith(
                           color: const Color.fromARGB(255, 111, 111, 111)),
                     ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          height: 7.h,
-                          width: 85.w,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget.bloc.schedules.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: const EdgeInsets.all(10),
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: colorsSchedule[
-                                      Random().nextInt(colorsSchedule.length)],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    widget.bloc.schedules[index],
-                                    style: const TextStyle(color: Colors.white),
+                    Visibility(
+                      visible: widget.bloc.frequencyType == 'weekly',
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: 5.h,
+                            width: 85.w,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.bloc.daysOfWeek.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  padding: const EdgeInsets.all(10),
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: colorsSchedule[Random()
+                                        .nextInt(colorsSchedule.length)],
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            await showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return AddSchedule(
-                                  bloc: widget.bloc,
+                                  child: Center(
+                                    child: Text(
+                                      widget.bloc.daysOfWeek[index],
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 );
                               },
-                            ).then((value) => setState(() {}));
-                          },
-                          icon: const Icon(
-                            Icons.add_circle_outline,
-                            color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                          IconButton(
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return AddSchedule(
+                                    bloc: widget.bloc,
+                                  );
+                                },
+                              ).then((value) => setState(() {}));
+                            },
+                            icon: const Icon(
+                              Icons.add_circle_outline,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     vSpace(1),
                     Row(
@@ -132,25 +136,25 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                         _builddropDownPicker(
                           Amount.values.map((e) => e).toList(),
                           (value) {
-                            widget.bloc.amount = value!;
+                            widget.bloc.doseType = value!;
                             setState(() {});
                           },
-                          widget.bloc.amount.name,
+                          widget.bloc.doseType.name,
                           context,
                         ),
                         CounterWidget(
-                          pillCount: widget.bloc.amountValue,
-                          title: widget.bloc.amount == Amount.dose
+                          pillCount: widget.bloc.dosesPerTimes,
+                          title: widget.bloc.doseType == Amount.dose
                               ? t.doseText
                               : t.pillText,
                           onDecreas: () {
                             widget.bloc.add(
-                                ChangeAmountValue(--widget.bloc.amountValue));
+                                ChangeAmountValue(--widget.bloc.dosesPerTimes));
                             setState(() {});
                           },
                           onIncrease: () {
                             widget.bloc.add(
-                                ChangeAmountValue(++widget.bloc.amountValue));
+                                ChangeAmountValue(++widget.bloc.dosesPerTimes));
                             setState(() {});
                           },
                         ),
@@ -159,19 +163,11 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          t.duration,
-                          style: txtTheme(context).bodyLarge!.copyWith(
-                              color: const Color.fromARGB(255, 111, 111, 111)),
-                        ),
-                        _builddropDownPicker(
-                          DurationMedication.values.map((e) => e).toList(),
-                          (value) {
-                            widget.bloc.duration = value!.count;
-                            setState(() {});
-                          },
-                          widget.bloc.duration,
-                          context,
+                        TxtField(
+                          cn: widget.bloc.duration,
+                          label: t.duration,
+                          width: 40.w,
+                          type: TextInputType.number,
                         ),
                         Text(
                           t.frequency,
@@ -181,19 +177,22 @@ class _AddMedicationWidgetState extends State<AddMedicationWidget> {
                         _builddropDownPicker<Frequency>(
                           Frequency.values.map((e) => e).toList(),
                           (value) {
-                            widget.bloc.frequency = value!.name;
+                            widget.bloc.frequencyType = value!.name;
                             setState(() {});
                           },
-                          widget.bloc.frequency,
+                          widget.bloc.frequencyType,
                           context,
                         )
                       ],
                     ),
-                    vSpace(3),
+                    vSpace(1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TextButton(onPressed: () {}, child: Text(t.cancel)),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(t.cancel),
+                        ),
                         ElevatedButton(
                             onPressed: () {
                               widget.bloc.add(AddMedicationEvent());

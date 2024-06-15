@@ -17,6 +17,8 @@ class UserProfileEntity extends Equatable {
   final String fullName;
   final String role;
   final List<String> medications;
+  final List<String> tasks;
+  final String token;
 
   const UserProfileEntity({
     required this.id,
@@ -34,6 +36,8 @@ class UserProfileEntity extends Equatable {
     required this.fullName,
     required this.role,
     required this.medications,
+    required this.tasks,
+    required this.token,
   });
 
   @override
@@ -53,10 +57,11 @@ class UserProfileEntity extends Equatable {
       location,
       fullName,
       role,
+      medications,
+      tasks,
+      token,
     ];
   }
-
- 
 
   UserProfileEntity copyWith({
     String? id,
@@ -74,6 +79,8 @@ class UserProfileEntity extends Equatable {
     String? fullName,
     String? role,
     List<String>? medications,
+    List<String>? tasks,
+    String? toekn,
   }) {
     return UserProfileEntity(
       id: id ?? this.id,
@@ -91,6 +98,8 @@ class UserProfileEntity extends Equatable {
       fullName: fullName ?? this.fullName,
       role: role ?? this.role,
       medications: medications ?? this.medications,
+      tasks: tasks ?? this.tasks,
+      token: toekn ?? this.token,
     );
   }
 }

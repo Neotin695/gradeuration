@@ -6,6 +6,8 @@ import 'package:gradeuration/core/tools/tools.dart';
 import 'package:gradeuration/features/auth/presentation/pages/auth_signup_page.dart';
 import 'package:gradeuration/features/settings/presentation/bloc/settings_bloc.dart';
 
+import '../../../../core/tools/shared/txt_field.dart';
+
 class PersonalData extends StatelessWidget {
   const PersonalData({super.key, required this.bloc});
   final SettingsBloc bloc;
@@ -45,7 +47,9 @@ class PersonalData extends StatelessWidget {
                 headingTitle(context, t.personalData),
                 vSpace(3),
                 TxtField(cn: bloc.email, label: t.email),
+                vSpace(2),
                 TxtField(cn: bloc.fullName, label: t.fullName),
+                vSpace(2),
                 TxtField(cn: bloc.location, label: t.cityName),
                 vSpace(3),
                 ElevatedButton(

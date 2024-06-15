@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gradeuration/core/helper/local_data.dart';
+import 'package:gradeuration/core/tools/tools.dart';
 
 class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -16,7 +17,14 @@ class AuthService {
 
   Future<void> signIn(email, password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final user = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if ((await _firestore.collection('users').doc(user.user!.uid).get())
+              .data()!['role'] ==
+          'doctor') {
+        _auth.signOut();
+        throw t.errUser;
+      }
       await updateUser();
     } on FirebaseAuthException catch (e) {
       throw e.code;

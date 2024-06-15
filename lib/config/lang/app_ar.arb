@@ -122,6 +122,28 @@
   },
   "pillText": "حبة",
   "doseText": "جرعة",
+  "errUser": "لا يُسمح لك باستخدام هذا التطبيق",
+  "makeMagic": "انتظر، نحن نصنع سحرًا",
+  "take": "اخذتها؟",
+  "no": "لا!!",
+  "reasonMedication": "اكتب سبب عدم تناولك للدواء هذه المرة",
+  "reason": "السبب",
+  "updateTitle": "تحديث الدواء",
+"updateBody": "قام المريض {name} بتحديث الدواء، يرجى الاطلاع على التغييرات ومراجعتها",
+"@updateBody":{
+  "placeholders": {
+    "name":{}
+  }
+},
+"addedTask": "تمت إضافة مهمتك بنجاح.",
+  "cong": "تهانينا!",
+  "notActive": "لم تتم الموافقة عليك بعد",
+  "noPatients": "ليس لديك اي مرضه حتي الان",
+
+  "temp": "temp",
+  "temp": "temp",
+  "temp": "temp",
+  "temp": "temp",
   "temp": "temp",
   "temp": "temp",
   "temp": "temp",

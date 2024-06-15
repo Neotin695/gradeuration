@@ -1,16 +1,15 @@
-import 'package:gradeuration/core/helper/usecase_helper.dart';
-import 'package:gradeuration/features/medication/domain/repositories/medication_repo.dart';
-
+import '../../../../core/helper/usecase_helper.dart';
 import '../entities/medication_entity.dart';
+import '../repositories/medication_repo.dart';
 
-class FetchMedicationUsecase
-    implements UsecaseHelper<Stream<List<MedicationEntity>>> {
+class FetchMedicationsUsecase
+    implements UsecaseHelper<Future<List<MedicationEntity>>> {
   final MedicationRepo _medicationRepo;
 
-  FetchMedicationUsecase(this._medicationRepo);
+  FetchMedicationsUsecase(this._medicationRepo);
 
   @override
-  Stream<List<MedicationEntity>> call(Map<String, dynamic> param) {
+  Future<List<MedicationEntity>> call(Map<String, dynamic> param) {
     return _medicationRepo.fetchMedications();
   }
 }

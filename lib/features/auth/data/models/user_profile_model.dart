@@ -1,5 +1,6 @@
-import 'package:gradeuration/features/auth/domain/entities/user_profile_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../domain/entities/user_profile_entity.dart';
 part 'user_profile_model.g.dart';
 
 @JsonSerializable()
@@ -20,6 +21,8 @@ class UserProfileModel extends UserProfileEntity {
     required super.profileImg,
     required super.role,
     required super.medications,
+    required super.tasks,
+    required super.token,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
@@ -44,5 +47,7 @@ class UserProfileModel extends UserProfileEntity {
         profileImg: entity.profileImg,
         role: entity.role,
         medications: entity.medications,
+        tasks: entity.tasks,
+        token: entity.token,
       );
 }

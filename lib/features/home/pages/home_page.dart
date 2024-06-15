@@ -87,6 +87,9 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ItemWidget(
+                  onTap: () {
+                    context.go(homeRoute(AppRoutes.task.path));
+                  },
                   image: Media.dailyTask.path,
                   color: const Color.fromARGB(255, 241, 194, 27),
                   title: t.dailyTask,

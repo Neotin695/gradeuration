@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gradeuration/core/helper/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_value/shared_value.dart';
 
@@ -15,6 +16,7 @@ void saveUser(UserProfileModel user) {
 }
 
 Future updateUser() async {
+  await updateToken(FirebaseAuth.instance.currentUser!.uid);
   final data = await FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -22,8 +24,18 @@ Future updateUser() async {
 
   if (data.exists) {
     final user = UserProfileModel.fromJson(data.data() as Map<String, dynamic>);
+
     saveUser(user);
   }
+}
+
+Future<void> updateToken(String userId) async {
+  final String token = (await FirebaseMessagingService.instance.generateToken)!;
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .update({'token': token});
 }
 
 Future<UserProfileEntity> getUserById(id) async {

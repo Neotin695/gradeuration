@@ -25,6 +25,8 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
       medications: (json['medications'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      tasks: (json['tasks'] as List<dynamic>).map((e) => e as String).toList(),
+      token: json['token'] as String,
     );
 
 Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
@@ -44,4 +46,6 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'fullName': instance.fullName,
       'role': instance.role,
       'medications': instance.medications,
+      'tasks': instance.tasks,
+      'token': instance.token,
     };

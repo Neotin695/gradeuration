@@ -11,4 +11,6 @@ class SignInEvent extends AuthEvent {}
 
 class SignUpEvent extends AuthEvent {}
 
+class FetchMedicationEvent extends AuthEvent {}
+
 class ForgotPasswordEvent extends AuthEvent {}

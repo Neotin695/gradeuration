@@ -5,26 +5,34 @@ class MedicationEntity extends Equatable {
   final String id;
   final String title;
   final String description;
+  final String whoAdded;
+  final String userId;
+  final String doctorId;
   final String cause;
-  final String frequency;
-  final int timesPerWeek;
-  final int pill;
-  final String type;
+  final String doseType;
+  final String frequencyType;
+  final int totalDoses;
+  final int dosesPerTimes;
   final int duration;
-  final int taken;
-  final List<String> schedules;
+  final int timesPerDay;
+  final List<Map<String, dynamic>> takeHistory;
+  final List<String> daysOfWeek;
   const MedicationEntity({
     required this.id,
     required this.title,
     required this.description,
+    required this.whoAdded,
+    required this.userId,
+    required this.doctorId,
     required this.cause,
-    required this.frequency,
-    required this.timesPerWeek,
-    required this.pill,
-    required this.type,
+    required this.doseType,
+    required this.frequencyType,
+    required this.totalDoses,
+    required this.dosesPerTimes,
     required this.duration,
-    required this.taken,
-    required this.schedules,
+    required this.timesPerDay,
+    required this.takeHistory,
+    required this.daysOfWeek,
   });
 
   @override
@@ -33,14 +41,18 @@ class MedicationEntity extends Equatable {
       id,
       title,
       description,
+      whoAdded,
+      userId,
+      doctorId,
       cause,
-      frequency,
-      timesPerWeek,
-      pill,
-      type,
+      doseType,
+      frequencyType,
+      totalDoses,
+      dosesPerTimes,
       duration,
-      taken,
-      schedules,
+      timesPerDay,
+      takeHistory,
+      daysOfWeek,
     ];
   }
 
@@ -48,27 +60,35 @@ class MedicationEntity extends Equatable {
     String? id,
     String? title,
     String? description,
+    String? whoAdded,
+    String? userId,
+    String? doctorId,
     String? cause,
-    String? frequency,
-    int? timesPerWeek,
-    int? pill,
-    String? type,
+    String? doseType,
+    String? frequencyType,
+    int? totalDoses,
+    int? dosesPerTimes,
     int? duration,
-    int? taken,
-    List<String>? schedules,
+    int? timesPerDay,
+    List<Map<String, dynamic>>? takeHistory,
+    List<String>? daysOfWeek,
   }) {
     return MedicationEntity(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
+      whoAdded: whoAdded ?? this.whoAdded,
+      userId: userId ?? this.userId,
+      doctorId: doctorId ?? this.doctorId,
       cause: cause ?? this.cause,
-      frequency: frequency ?? this.frequency,
-      timesPerWeek: timesPerWeek ?? this.timesPerWeek,
-      pill: pill ?? this.pill,
-      type: type ?? this.type,
+      doseType: doseType ?? this.doseType,
+      frequencyType: frequencyType ?? this.frequencyType,
+      totalDoses: totalDoses ?? this.totalDoses,
+      dosesPerTimes: dosesPerTimes ?? this.dosesPerTimes,
       duration: duration ?? this.duration,
-      taken: taken ?? this.taken,
-      schedules: schedules ?? this.schedules,
+      timesPerDay: timesPerDay ?? this.timesPerDay,
+      takeHistory: takeHistory ?? this.takeHistory,
+      daysOfWeek: daysOfWeek ?? this.daysOfWeek,
     );
   }
 }

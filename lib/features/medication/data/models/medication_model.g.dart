@@ -11,15 +11,22 @@ MedicationModel _$MedicationModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      schedules:
-          (json['schedules'] as List<dynamic>).map((e) => e as String).toList(),
-      frequency: json['frequency'] as String,
-      timesPerWeek: json['timesPerWeek'] as int,
-      duration: json['duration'] as int,
+      daysOfWeek: (json['daysOfWeek'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      timesPerDay: (json['timesPerDay'] as num).toInt(),
+      duration: (json['duration'] as num).toInt(),
       cause: json['cause'] as String,
-      pill: json['pill'] as int,
-      type: json['type'] as String,
-      taken: json['taken'] as int,
+      totalDoses: (json['totalDoses'] as num).toInt(),
+      doseType: json['doseType'] as String,
+      userId: json['userId'] as String,
+      whoAdded: json['whoAdded'] as String,
+      doctorId: json['doctorId'] as String,
+      dosesPerTimes: (json['dosesPerTimes'] as num).toInt(),
+      frequencyType: json['frequencyType'] as String,
+      takeHistory: (json['takeHistory'] as List<dynamic>)
+          .map((e) => e as Map<String, dynamic>)
+          .toList(),
     );
 
 Map<String, dynamic> _$MedicationModelToJson(MedicationModel instance) =>
@@ -27,12 +34,16 @@ Map<String, dynamic> _$MedicationModelToJson(MedicationModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'whoAdded': instance.whoAdded,
+      'userId': instance.userId,
+      'doctorId': instance.doctorId,
       'cause': instance.cause,
-      'frequency': instance.frequency,
-      'timesPerWeek': instance.timesPerWeek,
-      'pill': instance.pill,
-      'type': instance.type,
+      'doseType': instance.doseType,
+      'frequencyType': instance.frequencyType,
+      'totalDoses': instance.totalDoses,
+      'dosesPerTimes': instance.dosesPerTimes,
       'duration': instance.duration,
-      'taken': instance.taken,
-      'schedules': instance.schedules,
+      'timesPerDay': instance.timesPerDay,
+      'takeHistory': instance.takeHistory,
+      'daysOfWeek': instance.daysOfWeek,
     };

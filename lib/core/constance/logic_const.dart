@@ -18,6 +18,16 @@ List<Map<String, dynamic>> stage = [
   {'id': 'malignant', 'value': t.malignant},
 ];
 
+Map<String, int> daysMap = {
+  'Monday': DateTime.monday,
+  'Tuesday': DateTime.tuesday,
+  'Wednesday': DateTime.wednesday,
+  'Thursday': DateTime.thursday,
+  'Friday': DateTime.friday,
+  'Saturday': DateTime.saturday,
+  'Sunday': DateTime.sunday,
+};
+
 enum Frequency {
   daily,
   weekly,
@@ -39,13 +49,16 @@ enum DurationMedication {
   final int count;
 }
 
+const String baseUrlSendNotification = 'https://fcm.googleapis.com';
+
 List<String> schedule = [
-  'Before Breakfast',
-  'After Breakfast',
-  'After Dinner',
-  'Before Dinner',
-  'After Meals',
-  'Before Meals'
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
 ];
 
 List<Color> colorsSchedule = [

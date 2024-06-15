@@ -30,7 +30,7 @@ class _AddScheduleState extends State<AddSchedule> {
                 child: Text(t.cancel)),
             TextButton(
                 onPressed: () {
-                  widget.bloc.schedules = widget.bloc.selectedSchedules;
+                  widget.bloc.daysOfWeek = widget.bloc.selectedDays;
 
                   context.pop();
                 },
@@ -43,11 +43,11 @@ class _AddScheduleState extends State<AddSchedule> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  if (widget.bloc.selectedSchedules.contains(schedule[index])) {
-                    widget.bloc.selectedSchedules.remove(schedule[index]);
+                  if (widget.bloc.selectedDays.contains(schedule[index])) {
+                    widget.bloc.selectedDays.remove(schedule[index]);
                   } else {
-                    if (widget.bloc.selectedSchedules.length < 3) {
-                      widget.bloc.selectedSchedules.add(schedule[index]);
+                    if (widget.bloc.selectedDays.length < 3) {
+                      widget.bloc.selectedDays.add(schedule[index]);
                     } else {
                       BotToast.showText(text: t.limitSchedule);
                     }
@@ -59,8 +59,8 @@ class _AddScheduleState extends State<AddSchedule> {
                   children: [
                     ScheduleItem(title: schedule[index]),
                     Visibility(
-                      visible: widget.bloc.selectedSchedules
-                          .contains(schedule[index]),
+                      visible:
+                          widget.bloc.selectedDays.contains(schedule[index]),
                       child: const Icon(Icons.done),
                     )
                   ],

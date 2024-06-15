@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gradeuration/core/tools/tools.dart';
+
+import '../../../../core/tools/tools.dart';
 
 class CounterWidget extends StatefulWidget {
   const CounterWidget(

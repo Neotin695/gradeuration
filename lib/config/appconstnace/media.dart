@@ -12,6 +12,9 @@ enum Media {
   cause(path: 'assets/icons/cause.svg'),
   capSize(path: 'assets/icons/cap_size.svg'),
   duration(path: 'assets/icons/duration.svg'),
+  settingup(path: 'assets/icons/settingup.json'),
+  empty(path: 'assets/icons/empty.svg'),
+  taskIcon(path: 'assets/icons/task_icon.svg'),
   init(path: '');
 
   const Media({required this.path});

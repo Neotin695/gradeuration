@@ -123,6 +123,25 @@
   },
   "pillText": "Pill",
   "doseText": "Dose",
+  "errUser": "You are not allowed to use this app",
+  "makeMagic": "Wait we make a magic",
+  "take": "Take it?",
+  "no": "No!!",
+  "reasonMedication": "Write reason why you are not take medication this time",
+  "reason": "Reason",
+  "updateTitle": "update medication",
+  "updateBody": "The patient {name} updated medication please see changes and review it",
+  "@updateBody":{
+    "placeholders": {
+      "name":{}
+    }
+  },
+  "addedTask": "Your Task Added Successfully.",
+  "cong": "Congratulation!",
+  "notActive": "You haven't been approved yet",
+  "noPatients": "you haven't any patients yet!!",
+  
+  "temp": "temp",
   "temp": "temp",
   "temp": "temp",
   "temp": "temp",

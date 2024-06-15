@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gradeuration/core/helper/local_data.dart';
 import 'package:gradeuration/core/routes/routes.dart';
 import 'package:gradeuration/core/service/injection_container.dart';
 import 'package:gradeuration/core/tools/tools.dart';
@@ -45,7 +46,11 @@ class _AuthSignInViewState extends State<AuthSignInView> {
         }
         if (state is AuthSuccess) {
           BotToast.closeAllLoading();
-          context.go(AppRoutes.home.path);
+          if (currentUser.medications.isEmpty) {
+            context.go(AppRoutes.home.path);
+          } else {
+            context.go(signinRoute(AppRoutes.settingup.path));
+          }
         }
         if (state is AuthFailure) {
           BotToast.closeAllLoading();

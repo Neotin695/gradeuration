@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:intl/intl.dart';
 import '../constance/logic_const.dart';
 import '../routes/routes.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 TextTheme txtTheme(context) => Theme.of(context).textTheme;
 Widget get loading => const Center(child: CircularProgressIndicator());
-
+Widget get emptyWidget => const SizedBox();
 Widget vSpace(double height) => SizedBox(height: height.h);
+String formatDateTime = 'hh:mm a\n yyyy/MM/dd';
+
+String convDate(DateTime date) => DateFormat(formatDateTime).format(date);
+
 Widget hSpace(double width) => SizedBox(width: width.w);
 Widget get empty => const SizedBox();
 PreferredSizeWidget leadingAppBar(context, onTap, [List<Widget>? actions]) =>

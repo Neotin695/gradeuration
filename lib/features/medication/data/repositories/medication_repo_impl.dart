@@ -1,6 +1,6 @@
-import 'package:gradeuration/features/medication/data/datasources/medication_service.dart';
-import 'package:gradeuration/features/medication/domain/entities/medication_entity.dart';
-import 'package:gradeuration/features/medication/domain/repositories/medication_repo.dart';
+import '../../domain/entities/medication_entity.dart';
+import '../../domain/repositories/medication_repo.dart';
+import '../datasources/medication_service.dart';
 
 class MedicationRepoImpl implements MedicationRepo {
   final MedicationService _medicationService;
@@ -12,17 +12,22 @@ class MedicationRepoImpl implements MedicationRepo {
   }
 
   @override
-  Future<void> deleteMedication(String id) {
+  Future<void> deleteMedication(Map<String, dynamic> id) {
     return _medicationService.deleteMedication(id);
   }
 
   @override
-  Stream<List<MedicationEntity>> fetchMedications() {
+  Future<List<MedicationEntity>> fetchMedications() {
     return _medicationService.fetchMedications();
   }
 
   @override
   Future<void> updateMedication(Map<String, dynamic> data) {
     return _medicationService.updateMedication(data);
+  }
+
+  @override
+  Future<MedicationEntity> fetchMedication(String id) {
+    return _medicationService.fetchMedication(id);
   }
 }
